@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Store
+{% endblock %}
+
+{% block content_title %}
+    Products
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    {% for product in products %}
+        <div class="card border-dark mb-3" style="max-width: 18rem; margin-left: 4px;">
+            <div class="card-header">{{ product.name }}</div>
+            <div class="card-body text-dark">
+            <h5 class="card-title">{{ product.price }} $</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text">Available: {{ product.available_quantity }}</p>
+            </div>
+            <form action="/store/order" method="POST">
+                <p style="margin-left:1em">
+                    Add to cart:
+                </p>
+                <div class="product_form d-flex justify-content-around mb-3">
+                    <input type="hidden" id="product_id" name="product_id" value="{{ product.id }}">
+                    <input type="number"
+                        class="form-control w-50"
+                        id="{{ product_id }}_number"
+                        name="quantity"
+                        min="1" 
+                        max="{{ product.available_quantity }}"
+                    >
+                    <input type="submit" class="btn btn-success" value="Add to cart">
+                </div>
+            </form>
+        </div>
+    {% endfor %}
+{% endblock %}

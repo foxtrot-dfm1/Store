@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cart
+{% endblock %}
+
+{% block content_title %}
+    Cart Items
+{% endblock %}
+
+{% block content %}
+    {% for item in items %}
+        <div class="card border-dark mb-3" style="max-width: 18rem; margin-left: 4px;">
+            <div class="card-header">{{ item.product.name }}</div>
+            <div class="card-body text-dark">
+            <h5 class="card-title">{{ item.product.price }}</h5>
+            <p class="card-text">{{ item.product.description }}</p>
+            <p class="card-text">Order quantity: {{ item.quantity }}</p>
+            </div>
+            <form action="/cart/remove-item" method="POST">
+                <input type="hidden" name="cart_item_id" value="{{ item.id }}">
+                <div class="product_form d-flex justify-content-center">
+                    <input type="submit" class="btn btn-danger mb-4" value="Remove Item">
+                </div>
+                </form>
+            </form>
+        </div>
+    {% endfor %}
+    <div class="purchase">
+        <p>Total: {{ total }}</p>
+        <button class="btn btn-success">Purchase</button>
+    </div>
+{% endblock %}
