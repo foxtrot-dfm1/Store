@@ -16,14 +16,14 @@ class Cart(db.Model):
     __tablename__ = 'cart'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    cart_items = db.relationship("CartItem", backref="cart_items")
+    cart_items = db.relationship("CartItem", backref="cart_items", lazy='dynamic')
 
     def get_total(self):
         """Count total cart price"""
         total = 0
         
         for item in self.cart_items:
-            total += (item.product.price * item.quantity)
+            total += (float(item.product.price) * float(item.quantity))
         
         return total
 
